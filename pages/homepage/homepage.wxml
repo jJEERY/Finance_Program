@@ -1,0 +1,16 @@
+<view class='title-box'>
+  <view class="top-bar" bindtap='touch_search'>
+    <icon class='search-icon' type='search' size='15' style='color:#666E79'></icon>
+    <text class='text-style' space='ensp'> 请输入代码 / 名称 / 首字母 </text>
+  </view>
+</view>
+
+<view class='text-box'>
+  <view class='title-text'> 访问频率 TOP 20 </view>
+</view>
+
+<view wx:for="{{Code}}" wx:for-item="item" bindtap='touch_choose' data-select='{{item.code}}'>
+  <view class='stock-name'>{{item.name}}</view>
+  <view class='stock-code'>{{item.code}}</view>
+  <view class='stock-line'></view>
+</view>
