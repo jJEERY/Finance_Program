@@ -25,6 +25,7 @@ page {
   margin-right: 2%;
 }
 .stock-name{
+  display: flex;
   margin-top: 18rpx;
   margin-left: 5%;
   font-size : 35rpx;
@@ -36,4 +37,22 @@ page {
   font-size : 30rpx;
   font-family :STKaiti;
   color: #686E7A;
+}
+/* .delete {
+  margin-top: 0%;
+  width: 5%;
+  font-size: 15rpx;
+  margin-right: 5%;
+  background-color: #101318;  
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+.delete {
+  width: 25%;
+  font-size: 25rpx;
+  margin-right: 5%;
+  background-color: #3A3E47;
+  color: white;
 }
