@@ -1,6 +1,5 @@
 <view class="center">
   <image src="{{imageUrl}}" ></image>
-  <text>{{imageUrl}}</text>
 </view>
 
 <view class="center-text">

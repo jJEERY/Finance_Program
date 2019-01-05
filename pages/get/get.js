@@ -75,7 +75,7 @@ Page({
         if (itemArr.data == null)
           chosen = '+加自选';
         else
-          chosen = '已选择';
+          chosen = '已选中';
 
         that.setData({
           chosen: chosen
@@ -115,7 +115,7 @@ Page({
                 success: function (res) {
                   if (res.confirm) {
                     wx.navigateTo({
-                      url: '../welcome/welcome',
+                      url: '../homepage/homepage',
                     })
                   }
                 }
