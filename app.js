@@ -1,10 +1,10 @@
 App({
+
   globalData:{
     useropenID: '',
     Code:[],
   },
   data:{},
-
   onLaunch:function(){
     var that=this;
     wx.login({
@@ -20,7 +20,6 @@ App({
             header: {
               'content-type': 'application/json'
             },
-
             success: function (res) {
               that.useropenID = res.data;
 

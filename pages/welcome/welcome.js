@@ -238,7 +238,6 @@ Page({
       }
     })
   },
-
   onUnload: function (){
     wx.reLaunch({
       url: '../homepage/homepage',

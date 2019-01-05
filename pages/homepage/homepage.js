@@ -1,5 +1,6 @@
 const app = getApp();
 Page({
+
   /**
    * 页面的初始数据
    */
@@ -14,7 +15,7 @@ Page({
       url: '../welcome/welcome',
     })
   },
-
+  
   /* 选择top20的股票 */
   touch_choose: function (e){
     if (this.data.pagejump){
@@ -81,7 +82,7 @@ Page({
         console.log(that.data.Code);
         console.log(that.data.chosen);
       }
-    }); 
+    });
   },
 
   /**
@@ -174,7 +175,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-   
   },
 
   /**
