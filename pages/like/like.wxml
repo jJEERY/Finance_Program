@@ -1,0 +1,9 @@
+<view class='text-box'>
+  <view class='title-text'> 自选股 </view>
+</view>
+
+<view wx:for="{{Code}}" wx:for-item="item" bindtap='touch_choose' data-select='{{item.code}}'>
+  <view class='stock-name'>{{item.name}}</view>
+  <view class='stock-code'>{{item.code}}</view>
+  <view class='stock-line'></view>
+</view>

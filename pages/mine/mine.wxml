@@ -1,0 +1,10 @@
+<view class='user-box'>
+  <image class='user-iamge' src='/images/user.png'></image>
+</view>
+
+<view class='ban-line'></view>
+
+<view class='about-tip' bindtap='touch_search_help'>
+  <image class='about-icon' src='/images/help.png'>关于股票预测</image>
+  <view class='about-text'>关于股票预测</view>
+</view>

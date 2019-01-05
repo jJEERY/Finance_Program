@@ -1,0 +1,30 @@
+<scroll-view class="bigWrap" scroll-y="true" scroll-top="{{scrollTop}}"   bindscroll="scroll" bindscrolltolower= "scrolltolower" style="position: absolute; left: 0; top:0; bottom: 0; right: 0;">
+
+  <view class='title-box'>
+    <view class="top-bar">
+      <icon class='search-icon' type='search' size='16'></icon>
+      <input class="input-search" bindinput ='inputCode' maxlength="6" placeholder="{{input_place}}" value='{{userinput}}'/>
+      <icon class='clear-icon' type='clear' size='16' catchtap='clearinput'></icon>
+    </view>
+  </view>
+
+  <view class="partition-bar"></view>
+    <view class='tips-bar'>
+      <div class='tips-text'>{{title_tips}}</div>
+    </view>
+  <view class="partition-bar"></view>
+
+  <view wx:for="{{showcode}}" wx:for-item="code">
+    <view class='show-box' bindtap='touch_choose' data-select='{{code.code}}'>
+      <view class='show-name'>{{code.name}}</view>
+      <view class='show-code'>{{code.code}}</view>
+    </view>
+    <view class="partition-bar"></view>
+  </view>
+
+  <view class='com-widget-goTop' bindtap="goTop" wx:if="{{floorstatus}}">
+      <view class='icon-gotop'>
+            顶部
+      </view>
+  </view>
+</scroll-view>
