@@ -6,7 +6,9 @@ Page({
    */
   data: {
     pagejump: true,
-    chosen: []
+    chosen: [],
+    popErrorMsg: '',
+    Code: []
   },
 
   /* 点击搜索框 */
@@ -65,22 +67,29 @@ Page({
         'content-type': 'application/json'
       },
       success: function (res) {
-        console.log("修改成功！");
-        if (that.data.chosen[i]) {
-          that.data.Code[i].chosen = '+加自选';
-          that.data.chosen[i] = false;
+        var result = res.data;
+        if(result.resultCode==200) {
+          wx.showToast({
+            title: result.desc,
+          })
+          if (that.data.chosen[i]) {
+            that.data.Code[i].chosen = '+加自选';
+            that.data.chosen[i] = false;
+          }
+          else {
+            that.data.Code[i].chosen = '已选中';
+            that.data.chosen[i] = true;
+          }
+        } else {
+          // 输出错误提示
+          that.setData({
+            popErrorMsg:result.desc
+          });
+          that.fadeOut();
         }
-        else {
-          that.data.Code[i].chosen = '已选择';
-          that.data.chosen[i] = true;
-        }
-
-        that.onLoad();
-
-        console.log(code);
-        console.log(openid);
-        console.log(that.data.Code);
-        console.log(that.data.chosen);
+        that.setData({
+          Code: that.data.Code
+        })
       }
     });
   },
@@ -121,7 +130,7 @@ Page({
       },
       success: function (res) {
         var itemArr = res.data;
-        console.log(itemArr);
+        // console.log(itemArr);
         
         var Code = [];
         for (var i = 0; i < itemArr.data.length; i++) {
@@ -135,11 +144,20 @@ Page({
           }
         }
 
-        console.log(Code);
+        // console.log(Code);
         that.setData({
           Code: Code
         });
       }
+    })
+  },
+
+  /**
+   * 弹框错误提示修正
+   */
+  fadeOut: function () {
+    this.setData({
+      popErrorMsg: ''
     })
   },
 
