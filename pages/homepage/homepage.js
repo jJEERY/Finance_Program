@@ -82,10 +82,10 @@ Page({
           }
         } else {
           // 输出错误提示
-          that.setData({
-            popErrorMsg:result.desc
-          });
-          that.fadeOut();
+          wx.showToast({
+            title: result.desc,
+            icon: 'none'
+          })
         }
         that.setData({
           Code: that.data.Code
@@ -149,15 +149,6 @@ Page({
           Code: Code
         });
       }
-    })
-  },
-
-  /**
-   * 弹框错误提示修正
-   */
-  fadeOut: function () {
-    this.setData({
-      popErrorMsg: ''
     })
   },
 
