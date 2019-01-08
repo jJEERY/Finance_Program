@@ -110,12 +110,13 @@ Page({
         if(itemArr.data == null){
               wx.showModal({
                 title: '提示',
-                content: '暂无您查找股票的信息，请次日重试！',
+                content: '暂无此股票信息',
                 showCancel: false,
+                confirmText: '退出',
                 success: function (res) {
                   if (res.confirm) {
                     wx.navigateTo({
-                      url: '../homepage/homepage',
+                      url: '../welcome/welcome',
                     })
                   }
                 }
