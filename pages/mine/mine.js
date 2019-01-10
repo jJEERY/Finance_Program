@@ -4,7 +4,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    
+    userInfo: {
+      avatarUrl: "/images/user.png",//用户头像
+      nickName: "昵称",//用户昵称
+    }
   },
 
   /**
@@ -20,7 +23,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    /**
+     * 获取用户信息
     
+    wx.getUserInfo({
+      success: function (res) {
+        console.log(res);
+        var avatarUrl = 'userInfo.avatarUrl';
+        var nickName = 'userInfo.nickName';
+        that.setData({
+          [avatarUrl]: res.userInfo.avatarUrl,
+          [nickName]: res.userInfo.nickName,
+        })
+      }
+    })
+    */
   },
 
   /**

@@ -1,5 +1,6 @@
 <view class='user-box'>
-  <image class='user-iamge' src='/images/user.png'></image>
+  <image class='user-iamge' src='{{userInfo.avatarUrl}}'></image>
+  <view class='name-text'>{{userInfo.nickName}}</view>
 </view>
 
 <view class='ban-line'></view>
