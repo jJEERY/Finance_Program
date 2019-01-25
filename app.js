@@ -33,7 +33,13 @@ App({
               if (that.useropenIDCallback) {
                 that.useropenIDCallback(res.data);
               }
-            }
+            },
+            fail: function() {
+              wx.showToast({
+                title: '获取用户信息失败，请重试',
+                icon: 'none'
+              })
+            } 
           });
           //获得所有股票信息
           wx.request({
@@ -47,7 +53,13 @@ App({
                 allCode[i] = {code: iterm[i].code, name: iterm[i].name, letter: iterm[i].spell};
               }
               that.Code = allCode;
-              console.log(allCode);
+            },
+            fail: function() {
+              wx.showToast({
+                title: '获取股票信息失败，请重试',
+                icon: 'none',
+                duration: 2000
+              })
             }
           });
         } else {
