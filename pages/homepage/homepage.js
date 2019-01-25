@@ -116,31 +116,24 @@ Page({
   /* 获取前20的股票数据 */
   getCodemessge: function(id) {
     var that = this;
-    var openid = '"' + app.useropenID + '"';
-
+    var userId = app.useropenID;
     wx.request({
-      url: 'https://www.szu522.cn:50003/homepage.php',
+      url: 'http://localhost:9090/getStockTop20',
       data: {
-        openid: openid
+        userId: userId
       },
-      dataType: 'json',
       method: 'GET',
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (res) {
+      success: function(res) {
         var itemArr = res.data;
-        // console.log(itemArr);
-        
         var Code = [];
         for (var i = 0; i < itemArr.data.length; i++) {
           if (itemArr.data[i].chosen) {
             Code[i] = { code: itemArr.data[i].code, name: itemArr.data[i].name, chosen: '已选中' };
-            that.data.chosen[i] = true ;
-          } 
+            that.data.chosen[i] = true;
+          }
           else {
             Code[i] = { code: itemArr.data[i].code, name: itemArr.data[i].name, chosen: '+加自选' };
-            that.data.chosen[i] = false ;
+            that.data.chosen[i] = false;
           }
         }
 
@@ -148,6 +141,13 @@ Page({
         that.setData({
           Code: Code
         });
+      },
+      fail: function() {
+        wx.showToast({
+          title: '失败，请重试!',
+          icon: 'none',
+          duration: 2000
+        })
       }
     })
   },
