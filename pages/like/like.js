@@ -25,83 +25,123 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var id = app.useropenID;
-    id = '"'+id+'"';
+    var userId = app.useropenID;
     var that = this;
-
+    //连接服务器获取自选股列表
     wx.request({
-      url: 'https://www.szu522.cn:50003/selectstock.php' ,
+      url: 'http://localhost:9090/getStockById',
       data: {
-        openid: id
+        userId: userId
       },
-      dataType: 'json',
       method: 'GET',
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (res) {
+      //连接服务器成功
+      success: function(res) {
         var itemArr = res.data;
 
         var Code = [];
-        for (var i = 0; (itemArr.data != null) && (i < itemArr.data.length); i++)
-          Code[i] = { code: itemArr.data[i].code, name: itemArr.data[i].name };
-
-        that.setData({
-          Code: Code
-        })
+        //判断返回信息是否为空
+        if(itemArr != null) {
+          //将获得的自选股信息填到Code中
+          for(var i = 0; i < itemArr.length; i ++) {
+            Code[i] = {
+              code : itemArr[i].code,
+              name : itemArr[i].name
+            };
+          }
+          that.setData({
+            Code: Code
+          });
+        } else {
+          //当java获取数据库信息失败时的错误提示信息
+          wx.showToast({
+            title: '获取自选股信息失败',
+            icon: 'none',
+            duration: 2000
+          });
+          return;
+        }
+      },
+      //连接服务器失败的错误提示
+      fail: function() {
+        wx.showToast({
+          title: '连接服务器超时...',
+          icon: 'none',
+          duration: 2000
+        });
+        return;
       }
-    });
+    })
   },
 
   /**
    * 在自选股处取消自选股
    */
-  delete_option:function (e) {
-    this.setData({ pagejump: false });
+  delete_option: function(e) {
+    //点击取消自选否定页面跳转
+    this.setData({
+      pagejump: false
+    });
     var that = this;
-    var id = e.target.id;
-    var choose = this.data.Code;
-
-    var code = '"' + e.target.id + '"';
-    var openid = '"' + app.useropenID + '"';
+    var userId = app.useropenID;
+    //当前选中的股票
+    var code = e.target.id;
+    //自选股列表
+    var Code = this.data.Code;
     var index = -1;
-    for (var i = 0; i < choose.length; i++) {
-      if (id == choose[i].code) {
+    for(var i = 0; i < Code.length; i ++) {
+      if(code == Code[i].code) {
         index = i;
         break;
       }
     }
-    if(index == -1) {
+    if (index == -1) {
+      wx.showToast({
+        title: '选择目标错误',
+        icon: 'none',
+        duration: 2000
+      })
       return;
     }
+    //用户自选股页面只有取消自选股请求
     wx.request({
-      url: 'https://www.szu522.cn:50003/addstock.php',
+      url: 'http://localhost:9090/deleteStock',
       data: {
-        openid: openid,
+        userId: userId,
         code: code
       },
-      dataType: 'json',
       method: 'GET',
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (res) {
-        var result = res.data;
-        if (result.resultCode == 200) {
+      //连接成功
+      success: function(res) {
+        //对java返回值进行判断，是否成功操作数据库
+        var result = res.data.result;
+        if (result == "取消自选成功") {
           wx.showToast({
-            title: result.desc,
-          })
-        } else {
-          // 输出错误提示
-          that.setData({
-            popErrorMsg: result.desc
+            title: result,
           });
-          that.fadeOut();
+          //1、直接刷新页面重新获取自选股列表
+          that.onLoad();
+          //2、直接删除Code中的某一项,然后将值提交到公共值中
+          Code.splice(i, 1);
+          //将值提交到公共值中
+          that.setData({
+            Code: Code,
+          });
+        } else {
+          //成功连接了java但是操作数据库失败
+          wx.showToast({
+            title: result,
+            icon: 'none',
+            duration: 2000
+          })
         }
-        that.setData({
-          Code: that.data.Code
-        })
-        that.onLoad();
+      },
+      //连接服务器失败
+      fail: function() {
+        wx.showToast({
+          title: '连接服务器超时...',
+          icon: 'none',
+          duration: 2000
+        });
       }
     })
     
