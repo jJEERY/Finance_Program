@@ -37,7 +37,8 @@ App({
             fail: function() {
               wx.showToast({
                 title: '获取用户信息失败，请重试',
-                icon: 'none'
+                icon: 'none',
+                duration: 2000
               })
             } 
           });
@@ -65,9 +66,17 @@ App({
         } else {
           wx.showToast({
             title: '登录失败:' + res.errMsg,
-            icon: 'none'
+            icon: 'none',
+            duration: 2000
           })
         }
+      },
+      fail: function() {
+        wx.showToast({
+          title: '服务器正在维护中...',
+          icon: 'none',
+          duration: 3000
+        })
       } 
     })
   }
