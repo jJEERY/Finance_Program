@@ -30,68 +30,125 @@ Page({
     }
     this.setData({ pagejump: true });
   },
+  
+  /* 添加或取消用户自选股 */
+  self_option: function(e) {
 
-  /* 选择添加自选股票或者取消自选 */
-  self_option: function(e){
-    this.setData({ pagejump: false });
-
+    var userId = app.useropenID;
+    //点击+自选按钮后页面不跳转
+    this.setData({
+      pagejump: false
+    });
     var that = this;
-    var id = e.target.id;
-    var choose = this.data.Code;
-
-    var code = '"' + e.target.id + '"';
-    var openid = '"' + app.useropenID + '"';
-
+    var code = e.target.id;
+    var Code = this.data.Code;
     var index = -1;
-    for (var i = 0; i < choose.length;i++)
-      if (id == choose[i].code){
+    //循环判断目标id在top20中的下标
+    for(var i = 0; i < Code.length; i ++) {
+      if(code == Code[i].code) {
         index = i;
         break;
       }
-
-    if(index == -1){
-      return ;
     }
-    console.log(index);
-
-    /* 获取自选股里面的内容并比较 */
-    wx.request({
-      url: 'https://www.szu522.cn:50003/addstock.php',
-      data: {
-        openid: openid,
-        code: code
-      },
-      dataType: 'json',
-      method: 'GET',
-      header: {
-        'content-type': 'application/json'
-      },
-      success: function (res) {
-        var result = res.data;
-        if(result.resultCode==200) {
-          wx.showToast({
-            title: result.desc,
-          })
-          if (that.data.chosen[i]) {
-            that.data.Code[i].chosen = '+加自选';
-            that.data.chosen[i] = false;
+    //标记为-1说明目标不在top20中，提示错误信息
+    if(index == -1) {
+      wx.showToast({
+        title: '选择目标错误',
+        icon: 'none',
+        duration: 2000
+      })
+      return;
+    }
+    //获得原先记录是否为用户自选股的布尔值集合
+    var chosens = this.data.chosen;
+    //获得下标后通过chosen的布尔值判断是添加自选还是取消自选
+    if(chosens[i]) {
+      //取消自选
+      wx.request({
+        url: 'http://localhost:9090/deleteStock',
+        data: {
+          userId: userId,
+          code: code
+        },
+        method: 'GET',
+        success: function(res) {
+          //对java返回值进行判断，是否成功操作数据库
+          var result = res.data.result;
+          if(result == "取消自选成功") {
+            wx.showToast({
+              title: result,
+            });
+            //成功操作后，需要修改页面上的信息
+            Code[i].chosen = '+加自选';
+            chosens[i] = false;
+            //将值提交到公共值中
+            that.setData({
+              Code: Code,
+              chosen: chosens
+            });
+          } else {
+            //成功连接了java但是操作数据库失败
+            wx.showToast({
+              title: result,
+              icon: 'none',
+              duration: 2000
+            })
           }
-          else {
-            that.data.Code[i].chosen = '已选中';
-            that.data.chosen[i] = true;
-          }
-        } else {
-          // 输出错误提示
+        },
+        fail: function() {
           wx.showToast({
-            title: result.desc,
-            icon: 'none'
+            title: '连接服务器超时...',
+            icon: 'none',
+            duration: 2000
           })
         }
-        that.setData({
-          Code: that.data.Code
-        })
-      }
-    });
+      })
+    } else {
+      //加自选需要获得股票的名称
+      var name = Code[i].name;
+      //加自选
+      wx.request({
+        url: 'http://localhost:9090/addStock',
+        data: {
+          userId: userId,
+          code: code,
+          name: name
+        },
+        method: 'GET',
+        success: function(res) {
+          var result = res.data.result;
+          //添加自选股成功
+          if (result == "添加自选成功") {
+            wx.showToast({
+              title: result,
+            });
+            //选择成功后需要修改页面上的信息
+            Code[i].chosen = '已选中';
+            chosens[i] = true;
+            //将修改后的结果提交到公共值中
+            that.setData({
+              Code: Code,
+              chosen: chosens
+            });
+          } else {
+            //成功连接服务器但是操作数据库失败
+            wx.showToast({
+              title: result,
+              icon: 'none',
+              duration: 2000
+            })
+          }
+        },
+        fail: function() {
+          //连接java服务器失败
+          wx.showToast({
+            title: '连接服务器超时...',
+            icon: 'none',
+            duration: 2000
+          })
+        }
+      })
+    }
   },
 
   /**
