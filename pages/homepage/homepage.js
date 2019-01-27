@@ -65,7 +65,7 @@ Page({
     if(chosens[i]) {
       //取消自选
       wx.request({
-        url: 'http://localhost:9090/deleteStock',
+        url: 'http://172.31.71.181:9090/deleteStock',
         data: {
           userId: userId,
           code: code
@@ -108,7 +108,7 @@ Page({
       var name = Code[i].name;
       //加自选
       wx.request({
-        url: 'http://localhost:9090/addStock',
+        url: 'http://172.31.71.181:9090/addStock',
         data: {
           userId: userId,
           code: code,
@@ -175,7 +175,7 @@ Page({
     var that = this;
     var userId = app.useropenID;
     wx.request({
-      url: 'http://localhost:9090/getStockTop20',
+      url: 'http://172.31.71.181:9090/getStockTop20',
       data: {
         userId: userId
       },
@@ -183,13 +183,13 @@ Page({
       success: function(res) {
         var itemArr = res.data;
         var Code = [];
-        for (var i = 0; i < itemArr.data.length; i++) {
-          if (itemArr.data[i].chosen) {
-            Code[i] = { code: itemArr.data[i].code, name: itemArr.data[i].name, chosen: '已选中' };
+        for (var i = 0; i < itemArr.length; i++) {
+          if (itemArr[i].chosen) {
+            Code[i] = { code: itemArr[i].code, name: itemArr[i].name, chosen: '已选中' };
             that.data.chosen[i] = true;
           }
           else {
-            Code[i] = { code: itemArr.data[i].code, name: itemArr.data[i].name, chosen: '+加自选' };
+            Code[i] = { code: itemArr[i].code, name: itemArr[i].name, chosen: '+加自选' };
             that.data.chosen[i] = false;
           }
         }
