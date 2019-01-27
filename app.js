@@ -44,7 +44,7 @@ App({
           });
           //获得所有股票信息
           wx.request({
-            url: 'http://localhost:9090/getAllStocks',
+            url: 'http://172.31.71.181:9090/getAllStocks',
             data: {},
             method: 'GET',
             success:function(res) {
