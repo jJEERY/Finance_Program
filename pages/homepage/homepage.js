@@ -65,7 +65,7 @@ Page({
     if(chosens[i]) {
       //取消自选
       wx.request({
-        url: 'http://172.31.71.181:9090/deleteStock',
+        url: 'http://localhost:9090/deleteStock',
         data: {
           userId: userId,
           code: code
@@ -108,7 +108,7 @@ Page({
       var name = Code[i].name;
       //加自选
       wx.request({
-        url: 'http://172.31.71.181:9090/addStock',
+        url: 'http://localhost:9090/addStock',
         data: {
           userId: userId,
           code: code,
@@ -175,7 +175,7 @@ Page({
     var that = this;
     var userId = app.useropenID;
     wx.request({
-      url: 'http://172.31.71.181:9090/getStockTop20',
+      url: 'http://localhost:9090/getStockTop20',
       data: {
         userId: userId
       },

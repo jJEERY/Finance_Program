@@ -29,7 +29,7 @@ Page({
     var that = this;
     //连接服务器获取自选股列表
     wx.request({
-      url: 'http://172.31.71.181:9090/getStockById',
+      url: 'http://localhost:9090/getStockById',
       data: {
         userId: userId
       },
@@ -104,7 +104,7 @@ Page({
     }
     //用户自选股页面只有取消自选股请求
     wx.request({
-      url: 'http://172.31.71.181:9090/deleteStock',
+      url: 'http://localhost:9090/deleteStock',
       data: {
         userId: userId,
         code: code
